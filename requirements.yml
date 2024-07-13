@@ -1,0 +1,17 @@
+roles:
+  # https://github.com/msterhuj/ansible-role-proxmox_vms
+  - name: msterhuj.proxmox_vms
+    version: master
+
+  # https://github.com/robertdebock/ansible-role-haproxy
+  - name: robertdebock.haproxy
+    version: 4.7.4
+
+collections:
+  # https://github.com/VictoriaMetrics/ansible-playbooks
+  - name: victoriametrics.cluster
+    version: 0.58.1
+
+  # https://github.com/grafana/grafana-ansible-collection
+  - name: grafana.grafana
+    version: 5.3.0
