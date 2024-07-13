@@ -1,0 +1,150 @@
+all:
+  vars:
+    ansible_user: ubuntu
+    ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
+
+    env_file_content: "{{ lookup('file', '.env') }}"
+    env_vars: "{{ dict(env_file_content.splitlines() | map('split', '=', 1) | map('first') | zip(env_file_content.splitlines() | map('split', '=', 1) | map('last'))) }}"
+    proxmox_api_host: "{{ env_vars['PROXMOX_API_HOST'] }}"
+    proxmox_api_user: "{{ env_vars['PROXMOX_API_USER'] }}"
+    proxmox_api_password: "{{ env_vars['PROXMOX_API_PASSWORD'] }}"
+    proxmox_template_name: "ubuntu2404"
+    proxmox_storage: "local"
+    proxmox_disk_size: "10G"
+    proxmox_cores: 4
+    proxmox_memory: "{{ 4 * 1024 }}"
+    proxmox_ci_user: "ubuntu"
+    proxmox_ci_sshkeys: "{{ lookup('file', '~/.ssh/id_ed25519.pub') }}"
+    proxmox_ci_dns: "8.8.8.8"
+    proxmox_ci_searchdomains: "laboinfra.net"
+    proxmox_node: "magaera"
+  hosts:
+    ha-proxy-1:
+      ansible_host: "172.16.22.40"
+      proxmox_vmid: 5001
+      proxmox_interface:
+      - name: "net0"
+        bridge: "vmbr2"
+        firewall: false
+        model: "virtio"
+        ipconfig: "ip=172.16.22.40/24,gw=192.168.1.1"
+
+    ha-proxy-2:
+      ansible_host: "172.16.22.41"
+      proxmox_vmid: 5002
+      proxmox_interface:
+      - name: "net0"
+        bridge: "vmbr2"
+        firewall: false
+        model: "virtio"
+        ipconfig: "ip=172.16.22.41/24,gw=192.168.1.1"
+
+    grafana-1:
+      ansible_host: "172.16.22.42"
+      proxmox_vmid: 5011
+      proxmox_interface:
+      - name: "net0"
+        bridge: "vmbr2"
+        firewall: false
+        model: "virtio"
+        ipconfig: "ip=172.16.22.42/24,gw=192.168.1.1"
+
+    grafana-2:
+      ansible_host: "172.16.22.43"
+      proxmox_vmid: 5012
+      proxmox_interface:
+      - name: "net0"
+        bridge: "vmbr2"
+        firewall: false
+        model: "virtio"
+        ipconfig: "ip=172.16.22.43/24,gw=192.168.1.1"
+
+    db-1:
+      ansible_host: "172.16.22.44"
+      proxmox_vmid: 5031
+      proxmox_interface:
+      - name: "net0"
+        bridge: "vmbr2"
+        firewall: false
+        model: "virtio"
+        ipconfig: "ip=172.16.22.44/24,gw=192.168.1.1"
+
+    db-2:
+      ansible_host: "172.16.22.45"
+      proxmox_vmid: 5032
+      proxmox_interface:
+      - name: "net0"
+        bridge: "vmbr2"
+        firewall: false
+        model: "virtio"
+        ipconfig: "ip=172.16.22.45/24,gw=192.168.1.1"
+
+    db-3:
+      ansible_host: "172.16.22.46"
+      proxmox_vmid: 5033
+      proxmox_interface:
+      - name: "net0"
+        bridge: "vmbr2"
+        firewall: false
+        model: "virtio"
+        ipconfig: "ip=172.16.22.46/24,gw=192.168.1.1"
+
+    vmc-injector-1:
+      ansible_host: "172.16.22.47"
+      proxmox_vmid: 5041
+      proxmox_interface:
+      - name: "net0"
+        bridge: "vmbr2"
+        firewall: false
+        model: "virtio"
+        ipconfig: "ip=172.16.22.47/24,gw=192.168.1.1"
+
+    vmc-injector-2:
+      ansible_host: "172.16.22.48"
+      proxmox_vmid: 5042
+      proxmox_interface:
+      - name: "net0"
+        bridge: "vmbr2"
+        firewall: false
+        model: "virtio"
+        ipconfig: "ip=172.16.22.48/24,gw=192.168.1.1"
+
+    vmc-storage-1:
+      ansible_host: "172.16.22.49"
+      proxmox_vmid: 5051
+      proxmox_interface:
+      - name: "net0"
+        bridge: "vmbr2"
+        firewall: false
+        model: "virtio"
+        ipconfig: "ip=172.16.22.49/24,gw=192.168.1.1"
+
+    vmc-storage-2:
+      ansible_host: "172.16.22.50"
+      proxmox_vmid: 5052
+      proxmox_interface:
+      - name: "net0"
+        bridge: "vmbr2"
+        firewall: false
+        model: "virtio"
+        ipconfig: "ip=172.16.22.50/24,gw=192.168.1.1"
+
+    vmc-selector-1:
+      ansible_host: "172.16.22.51"
+      proxmox_vmid: 5061
+      proxmox_interface:
+      - name: "net0"
+        bridge: "vmbr2"
+        firewall: false
+        model: "virtio"
+        ipconfig: "ip=172.16.22.51/24,gw=192.168.1.1"
+
+    vmc-selector-2:
+      ansible_host: "172.16.22.52"
+      proxmox_vmid: 5062
+      proxmox_interface:
+      - name: "net0"
+        bridge: "vmbr2"
+        firewall: false
+        model: "virtio"
+        ipconfig: "ip=172.16.22.52/24,gw=192.168.1.1"

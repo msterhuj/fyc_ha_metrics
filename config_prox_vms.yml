@@ -1,0 +1,6 @@
+- name: "Deploy VM on Proxmox Server"
+  hosts: all
+  connection: local
+  gather_facts: false
+  roles:
+    - role: msterhuj.proxmox_vms
